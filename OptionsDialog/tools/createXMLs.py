@@ -13,7 +13,7 @@ def createDescriptionFile(c):  # description.xmlファイルの作成。
 	cfg = c["ini"]["description.xml"]  # config.iniを読み込んだconfigparserのdescription.xmlセクションを取得。
 	if cfg["identifier"] == "IMPLE_NAME":  # IMPLE_NAMEのときはoptiondialoghandler.pyの実装サービス名をIMPLE_NAMEを使う。
 		for component in c["components"]:
-			if component["filename"] == "optiondialoghandler.py":
+			if component["filename"] == "optionsdialoghandler.py":
 				cfg["identifier"] = component["IMPLE_NAME"]
 				break
 	with open(description_file, "w", encoding="utf-8") as f:
