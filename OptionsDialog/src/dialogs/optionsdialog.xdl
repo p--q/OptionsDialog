@@ -3,7 +3,7 @@
 <dlg:window
 	xmlns:dlg="http://openoffice.org/2000/dialog"
 	xmlns:script="http://openoffice.org/2000/script"
-	dlg:id="mytools_Extensions_MaximumPaperSize"
+	dlg:id="optionsdialog"
 	dlg:left="80"
 	dlg:top="79"
 	dlg:width="263"
