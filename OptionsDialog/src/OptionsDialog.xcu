@@ -22,7 +22,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 					<value xml:lang="ja-JP">最大用紙サイズ</value>
 				</prop>
 				<prop oor:name="OptionsPage">
-					<value>%origin%/dialogs/mytoolsExtensionsMaximumPaperSize.xdl</value>
+					<value>%origin%/dialogs/optionsdialog.xdl</value>
 				</prop>
 				<prop oor:name="EventHandlerService">
 					<value>com.pq.blogspot.MaximumPaperSize</value>
