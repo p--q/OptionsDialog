@@ -11,11 +11,8 @@ def createDescriptionFile(c):  # description.xmlファイルの作成。
 	description_file = "description.xml"
 	c["backup"](description_file)
 	cfg = c["ini"]["description.xml"]  # config.iniを読み込んだconfigparserのdescription.xmlセクションを取得。
-	if cfg["identifier"] == "IMPLE_NAME":  # IMPLE_NAMEのときはoptiondialoghandler.pyの実装サービス名をIMPLE_NAMEを使う。
-		for component in c["components"]:
-			if component["filename"] == "optionsdialoghandler.py":
-				cfg["identifier"] = component["IMPLE_NAME"]
-				break
+	if cfg["identifier"] == "%IMPLE_NAME%":  # IMPLE_NAMEのときはoptiondialoghandler.pyの実装サービス名をIMPLE_NAMEを使う。
+		cfg["identifier"] = c["ExtentionID"]
 	with open(description_file, "w", encoding="utf-8") as f:
 		rt = Elem("description", {"xmlns": "http://openoffice.org/extensions/description/2006", "xmlns:xlink": "http://www.w3.org/1999/xlink", "xmlns:d": "http://openoffice.org/extensions/description/2006", "xmlns:l": "http://libreoffice.org/extensions/description/2011"})
 		keys = "identifier", "version", "platform"
@@ -106,4 +103,4 @@ def createXMLs(c):
 	createManifestFile(component_file, c)  # manifext.xmlファイルの作成
 	createDescriptionFile(c)  # description.xmlファイルの作成。
 if __name__ == "__main__":
-	createXMLs(getConfig())
+	createXMLs(getConfig(False))
