@@ -30,9 +30,7 @@ class DilaogHandler(unohelper.Base, XServiceInfo, XContainerWindowEventHandler):
 			try:
 				if eventname=="initialize":  # オプションダイアログがアクティブになった時
 # 					import pydevd; pydevd.settrace(stdoutToServer=True, stderrToServer=True)
-					# 		name = dialog.getModel().Name
-# 		if name != "mytools_Extensions_MaximumPaperSize":
-# 			return
+
 					
 					maxwidth, maxheight = self.readConfig(*self.cfgnames)
 					buttonlistener = ButtonListener(dialog)

@@ -43,4 +43,4 @@ def createRDB(c):
         else:  # urdファイルが出力されていないとき
             print("urd files are not created.")
 if __name__ == "__main__":
-    createRDB(getConfig())
+    createRDB(getConfig(False))

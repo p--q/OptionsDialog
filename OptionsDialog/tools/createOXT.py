@@ -43,5 +43,5 @@ def createOXT(c):
 			args.extend(lst_files)
 			subprocess.run(args)  # pythonpathフォルダをoxtファイルに収納。
 if __name__ == "__main__":
-	createOXT(getConfig())
+	createOXT(getConfig(False))
 	

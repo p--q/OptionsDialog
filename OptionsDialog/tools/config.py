@@ -52,7 +52,7 @@ def getConfig(backupflg=None):
 		 	c["ExtentionID"] = cp["IMPLE_NAME"]  # optionsdialoghandler.pyの実装サービス名を拡張期のIDにする。
 	return c
 if __name__ == "__main__":
-	c = getConfig()
+	c = getConfig(False)
 	print(c)
   
 	

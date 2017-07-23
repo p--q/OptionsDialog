@@ -240,4 +240,4 @@ def createProtocolHandlerXcu(c):
             tree.write(f.name, "utf-8", True)  # xml_declarationを有効にしてutf-8でファイルに出力する。   
             print("{} has been created.".format(filename))  
 if __name__ == "__main__":
-    createProtocolHandlerXcu(getConfig())
+    createProtocolHandlerXcu(getConfig(False))
