@@ -7,31 +7,31 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<node oor:name="Nodes">
 		<node
-			oor:name="com.pq.blogspot.comp.MaximumPaperSize.Node1"
+			oor:name="com.pq.blogspot.comp.ExtensionExample.Node1"
 			oor:op="fuse">
+			<prop oor:name="AllModules">
+				<value>false</value>
+			</prop>
 			<prop oor:name="Label">
 				<value xml:lang="en-US">Extensions</value>
 				<value xml:lang="ja-JP">拡張機能</value>
 			</prop>
-			<prop oor:name="AllModules">
-				<value>false</value>
-			</prop>
 			<node oor:name="Leaves">
 				<node
-					oor:name="com.pq.blogspot.comp.MaximumPaperSize"
+					oor:name="com.pq.blogspot.comp.ExtensionExample"
 					oor:op="fuse">
 					<prop oor:name="EventHandlerService">
-						<value>com.pq.blogspot.comp.MaximumPaperSize</value>
+						<value>com.pq.blogspot.comp.ExtensionExample</value>
+					</prop>
+					<prop oor:name="OptionsPage">
+						<value>%origin%/dialogs/optionsdialog.xdl</value>
 					</prop>
 					<prop oor:name="Label">
 						<value xml:lang="en-US">Maximum Paper Size</value>
 						<value xml:lang="ja-JP">最大用紙サイズ</value>
 					</prop>
 					<prop oor:name="Id">
-						<value>com.pq.blogspot.comp.MaximumPaperSize</value>
-					</prop>
-					<prop oor:name="OptionsPage">
-						<value>%origin%/dialogs/optionsdialog.xdl</value>
+						<value>com.pq.blogspot.comp.ExtensionExample</value>
 					</prop>
 				</node>
 			</node>
@@ -43,7 +43,7 @@
 			oor:op="fuse">
 			<node oor:name="Nodes">
 				<node
-					oor:name="com.pq.blogspot.comp.MaximumPaperSize.Node1"
+					oor:name="com.pq.blogspot.comp.ExtensionExample.Node1"
 					oor:op="fuse" />
 			</node>
 		</node>

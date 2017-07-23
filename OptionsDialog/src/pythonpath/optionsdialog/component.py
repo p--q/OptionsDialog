@@ -22,8 +22,8 @@ class DilaogHandler(unohelper.Base, XServiceInfo, XContainerWindowEventHandler):
 	def __init__(self, ctx, *args):
 		self.ctx = ctx
 		self.smgr = ctx.getServiceManager()
-		self.readConfig, self.writeConfig = createConfigAccessor(ctx, self.smgr, "/org.openoffice.Office.Common/Drawinglayer")
-		self.cfgnames = "MaximumPaperWidth", "MaximumPaperHeight"
+		self.readConfig, self.writeConfig = createConfigAccessor(ctx, self.smgr, "/com.pq.blogspot.comp.ExtensionExample.ExtensionData/Leaves/MaximumPaperSize")
+		self.cfgnames = "Width", "Height"
 	# XContainerWindowEventHandler
 	def callHandlerMethod(self, dialog, eventname, methodname):  # ブーリアンを返す必要あり。dialogはUnoControlDialog。 eventnameは文字列initialize, ok, backのいずれか。methodnameは文字列external_event。
 		if methodname==self.METHODNAME:  # Falseのときがありうる?
@@ -39,17 +39,20 @@ class DilaogHandler(unohelper.Base, XServiceInfo, XContainerWindowEventHandler):
 					addControl = controlCreator(self.ctx, self.smgr, dialog)
 					addControl("FixedLine", {"PositionX": 5, "PositionY": 13, "Width": 250, "Height": 10, "Label": "Maximum page size"})
 					addControl("FixedText", {"PositionX": 11, "PositionY": 39, "Width": 49, "Height": 15, "Label": "Width", "NoLabel": True})
-					addControl("NumericField", {"PositionX": 65, "PositionY": 39, "Width": 60, "Height": 15, "Spin": True, "ValueMin": 1, "Value": maxwidth, "DecimalAccuracy": 0})
-					addControl("NumericField", {"PositionX": 65, "PositionY": 64, "Width": 60, "Height": 15, "Spin": True, "ValueMin": 1, "Value": maxheight, "DecimalAccuracy": 0})
+					addControl("NumericField", {"PositionX": 65, "PositionY": 39, "Width": 60, "Height": 15, "Spin": True, "ValueMin": 1, "Value": float(maxwidth), "DecimalAccuracy": 2})
+					addControl("NumericField", {"PositionX": 65, "PositionY": 64, "Width": 60, "Height": 15, "Spin": True, "ValueMin": 1, "Value": float(maxheight), "DecimalAccuracy": 2})
 					addControl("FixedText", {"PositionX": 11, "PositionY": 66, "Width": 49, "Height": 15, "Label": "Height", "NoLabel": True})
 					addControl("FixedText", {"PositionX": 127, "PositionY": 42, "Width": 25, "Height": 15, "Label": "cm", "NoLabel": True})
 					addControl("FixedText", {"PositionX": 127, "PositionY": 68, "Width": 25, "Height": 15, "Label": "cm", "NoLabel": True})
 					addControl("Button", {"PositionX": 155, "PositionY": 39, "Width": 50, "Height": 15, "Label": "~Default"}, {"setActionCommand": "width", "addActionListener": buttonlistener})
 					addControl("Button", {"PositionX": 155, "PositionY": 64, "Width": 50, "Height": 15, "Label": "~Default"}, {"setActionCommand": "height", "addActionListener": buttonlistener})
 				elif eventname=="ok":  # OKボタンが押された時
+					
+# 					import pydevd; pydevd.settrace(stdoutToServer=True, stderrToServer=True)
+					
 					maxwidth = dialog.getControl("NumericField1").getModel().Value
 					maxheight = dialog.getControl("NumericField2").getModel().Value
-					self.writeConfig(self.cfgnames, (int(maxwidth), int(maxheight)))
+					self.writeConfig(self.cfgnames, (str(maxwidth), str(maxheight)))
 				elif eventname=="back":  # 元に戻すボタンが押された時
 					maxwidth, maxheight = self.readConfig(*self.cfgnames)
 					dialog.getControl("NumericField1").getModel().Value= maxwidth

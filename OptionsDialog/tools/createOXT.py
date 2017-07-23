@@ -21,7 +21,7 @@ def createOXT(c):
 	rdbs = glob.glob("*.rdb")  # rdbファイルを取得。
 	comps = glob.glob("*.components")  # .componentsファイルを取得。 
 	pys = glob.glob("*.py")  # Python UNO Componentファイルを取得。 
-	xcus = glob.glob("*.xcu")  # xcuファイルを取得。
+	xcus = glob.glob("*.xc?")  # xcu, .xcsファイルを取得。
 	icons = glob.glob(os.path.join("icons", "*.png"))  # iconファイルを取得。
 	dialogs = glob.glob(os.path.join("dialogs", "**", "*.*"), recursive=True)  # ダイアログフォルダ内のファイルをすべて取得。
 	descriptions = ["description.xml", *glob.glob("{}*".format(c["ini"]["description.xml"]["license-text-en"])), *glob.glob(os.path.join("descriptions", "*.txt"))]  # description.xml関連のファイルを取得。

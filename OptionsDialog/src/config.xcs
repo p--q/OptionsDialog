@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<oor:component-schema
+	oor:name="ExtensionData"
+	oor:package="com.pq.blogspot.comp.ExtensionExample"
+	xml:lang="en-US"
+	xmlns:oor="http://openoffice.org/2001/registry"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<info>
+		<author>p--q.blogspot.com</author>
+		<desc>Contains the options data used for the test extensions.</desc>
+	</info>
+	<templates>
+		<group oor:name="Size">
+			<info>
+				<desc>width and hight.</desc>
+			</info>
+			<prop
+				oor:name="Width"
+				oor:type="xs:string">
+				<value>300</value>
+			</prop>
+			<prop
+				oor:name="Height"
+				oor:type="xs:string">
+				<value>300</value>
+			</prop>
+		</group>
+	</templates>
+	<component>
+		<group oor:name="Leaves">
+			<node-ref
+				oor:name="MaximumPaperSize"
+				oor:node-type="Size" />
+		</group>
+	</component>
+</oor:component-schema>
