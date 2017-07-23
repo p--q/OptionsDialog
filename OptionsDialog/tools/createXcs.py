@@ -10,10 +10,6 @@ def createXcs(c):
 	c["backup"](filename)  # すでにあるファイルをバックアップ	
 	with open(filename, "w", encoding="utf-8") as f:  # OptionsDialog.xcuファイルの作成
 		root = Elem("oor:component-schema", {"oor:name": "ExtensionData", "oor:package": c["ExtentionID"], "xmlns:oor": "http://openoffice.org/2001/registry", "xmlns:xs": "http://www.w3.org/2001/XMLSchema", "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance", "xml:lang": "en-US"})  # 根の要素を作成。
-		root.append(Elem("info"))
-		cfg = c["ini"]["description.xml"]  # config.iniを読み込んだconfigparserのdescription.xmlセクションを取得。
-		root[-1].append(Elem("author", text=cfg["publisher-en"]))
-		root[-1].append(Elem("desc", text="Contains the options data used for the test extensions."))
 		root.append(Elem("templates"))
 		root[-1].append(Elem("group", {"oor:name": "Size"}))
 		root[-1][-1].append(Elem("info"))
