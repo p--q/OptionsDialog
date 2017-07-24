@@ -19,8 +19,8 @@ if __name__ == '__main__':
 #	 print("\ncreateProtocolHandlerXcu\n")
 #	 createProtocolHandlerXcu(c)
 
-	print("\ncreateOptionsDialogXcu\n")
-	createOptionsDialogXcu(c)
+# 	print("\ncreateOptionsDialogXcu\n")
+# 	createOptionsDialogXcu(c)
 
 # 	print("\ncreateXMLs\n")
 # 	createXMLs(c)
