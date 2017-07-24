@@ -106,4 +106,4 @@ def createIDLs(c):
             f.write("\n".join(lines))
             print(fn + " has been created from the contents defined with defineIDLs() in createIDLs.py.")
 if __name__ == "__main__":
-    createIDLs(getConfig())        
+    createIDLs(getConfig(False))        
