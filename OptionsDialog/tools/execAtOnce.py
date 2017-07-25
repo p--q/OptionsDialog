@@ -3,6 +3,7 @@ from createRDB import createRDB
 from createProtocolHandlerXcu import createProtocolHandlerXcu
 from createOptionsDialogXcu import createOptionsDialogXcu
 from createXMLs import createXMLs
+from createXcs import createXcs
 from createOXT import createOXT
 from deployOXT import deployOXT
 from config import getConfig
@@ -21,6 +22,9 @@ if __name__ == '__main__':
 
 # 	print("\ncreateOptionsDialogXcu\n")
 # 	createOptionsDialogXcu(c)
+
+# 	print("\ncreateXcs\n")
+# 	createXcs(c)
 
 # 	print("\ncreateXMLs\n")
 # 	createXMLs(c)
