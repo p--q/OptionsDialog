@@ -33,12 +33,12 @@ def createOXT(c):
 	args.extend(lst_files)
 	subprocess.run(args)  # 必須ファイルをoxtファイルに収納。
 	if os.path.exists("pythonpath"):  # pythonpathフォルダがあるとき
-		exts = "py","mo"  # oxtファイルに含めるファイルの拡張子のタプル。
+		exts = "py", "mo"  # oxtファイルに含めるファイルの拡張子のタプル。
 		lst_files = []  # ファイルリストの初期化。
 		for ext in exts:
 			g = glob.glob(os.path.join("pythonpath", "**", "*.{}".format(ext)), recursive=True)  # 指定拡張子のファイルのパスを取得。
 			if g: lst_files.extend(g)  # 指定拡張子のファイルがあるのならリストに追加。
-		if not g:
+		if g:
 			args = ["zip", "-u", oxt]
 			args.extend(lst_files)
 			subprocess.run(args)  # pythonpathフォルダをoxtファイルに収納。
