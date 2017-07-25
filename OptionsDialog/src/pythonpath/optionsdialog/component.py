@@ -2,9 +2,6 @@
 # -*- coding: utf-8 -*-
 import gettext
 import os
-lodir = os.path.join(os.path.abspath(os.path.dirname(__file__)), "locale")  # このスクリプトと同じファルダにあるlocaleフォルダの絶対パスを取得。
-t = gettext.translation("component", lodir, fallback=True)  # Translations インスタンスを取得。
-_ = t.gettext  # _にt.gettext関数を代入。
 import unohelper
 from com.sun.star.awt import XContainerWindowEventHandler
 from com.sun.star.lang import XServiceInfo
@@ -12,15 +9,20 @@ from com.sun.star.awt import XActionListener
 from com.sun.star.beans import PropertyValue
 # from com.sun.star.awt.PosSize import POSSIZE  # ピクセル単位でコントロールの座標を指定するときにPosSizeキーの値に使う。
 import traceback
-IMPLE_NAME = None
-SERVICE_NAME = None
+def localization(ctx):  # 地域化。moファイルの切替。Linuxでは不要だがWindowsでは設定が必要。
+	global _
+	readConfig, dummy = createConfigAccessor(ctx, ctx.getServiceManager(), "/org.openoffice.Setup/L10N")  # LibreOfficeの言語設定へのパス。
+	lang = readConfig("ooLocale"),  # 現在のロケールを取得。タプルかリストで渡す。
+	lodir = os.path.join(os.path.abspath(os.path.dirname(__file__)), "locale")  # このスクリプトと同じファルダにあるlocaleフォルダの絶対パスを取得。
+	mo = os.path.splitext(os.path.basename(__file__))[0]  # moファイル名。拡張子なし。このスクリプトファイルと同名と想定。
+	t = gettext.translation(mo, lodir, lang, fallback=True)  # Translations インスタンスを取得。moファイルがなくてもエラーはでない。
+	_ = t.gettext  # _にt.gettext関数を代入。
 def create(ctx, *args, imple_name, service_name):
 	global IMPLE_NAME
 	global SERVICE_NAME
-	if IMPLE_NAME is None:
-		IMPLE_NAME = imple_name
-	if SERVICE_NAME is None:
-		SERVICE_NAME = service_name
+	IMPLE_NAME = imple_name
+	SERVICE_NAME = service_name
+	localization(ctx)  # 地域化する。
 	return DilaogHandler(ctx, *args)
 class DilaogHandler(unohelper.Base, XServiceInfo, XContainerWindowEventHandler):  # UNOコンポーネントにするクラス。
 	METHODNAME = "external_event"  # 変更できない。
