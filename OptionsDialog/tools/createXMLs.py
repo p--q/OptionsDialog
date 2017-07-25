@@ -11,11 +11,8 @@ def createDescriptionFile(c):  # description.xmlファイルの作成。
 	description_file = "description.xml"
 	c["backup"](description_file)
 	cfg = c["ini"]["description.xml"]  # config.iniを読み込んだconfigparserのdescription.xmlセクションを取得。
-	if cfg["identifier"] == "IMPLE_NAME":  # IMPLE_NAMEのときはoptiondialoghandler.pyの実装サービス名をIMPLE_NAMEを使う。
-		for component in c["components"]:
-			if component["filename"] == "optiondialoghandler.py":
-				cfg["identifier"] = component["IMPLE_NAME"]
-				break
+	if cfg["identifier"] == "%IMPLE_NAME%":  # IMPLE_NAMEのときはoptiondialoghandler.pyの実装サービス名をIMPLE_NAMEを使う。
+		cfg["identifier"] = c["ExtentionID"]
 	with open(description_file, "w", encoding="utf-8") as f:
 		rt = Elem("description", {"xmlns": "http://openoffice.org/extensions/description/2006", "xmlns:xlink": "http://www.w3.org/1999/xlink", "xmlns:d": "http://openoffice.org/extensions/description/2006", "xmlns:l": "http://libreoffice.org/extensions/description/2011"})
 		keys = "identifier", "version", "platform"
@@ -74,8 +71,10 @@ def createComponentsFile(component_file, c):  # .componentファイルの作成�
 		tree = ET.ElementTree(rt)  # 根要素からxml.etree.ElementTree.ElementTreeオブジェクトにする。
 		tree.write(f.name, "utf-8", True)  # xml_declarationを有効にしてutf-8でファイルに出力する。   
 		print("{} file has been created.".format(component_file))
-def addcfgNode(f):
+def addXcuNode(f):
 	return Elem("manifest:file-entry", {"manifest:full-path":f, "manifest:media-type":"application/vnd.sun.star.configuration-data"})
+def addXcsNode(f):
+	return Elem("manifest:file-entry", {"manifest:full-path":f, "manifest:media-type":"application/vnd.sun.star.configuration-schema"})
 def createManifestFile(component_file, c):  # manifext.xmlファイルの作成
 	mani = os.path.join(c["src_path"], "META-INF", "manifest.xml")  # manifest.xmlの絶対パスを取得。
 	if not os.path.exists("META-INF"):  # META-INFフォルダがなければ作成する。
@@ -84,13 +83,16 @@ def createManifestFile(component_file, c):  # manifext.xmlファイルの作成
 		c["backup"](mani)
 	with open(mani, "w", encoding="utf-8") as f:
 		rt = Elem("manifest:manifest", {"xmlns:manifest":"http://openoffice.org/2001/manifest"})
+		xcss = glob.glob("*.xcs")  # xcsファイルのリストを取得。
+		for xcs in xcss:
+			rt.append(addXcsNode(xcs))
 		xcus = glob.glob("*.xcu")  # xcuファイルのリストを取得。
 		addonsxcu = "Addons.xcu"
 		if addonsxcu in xcus:  # Addons.xcuファイルがあるときは先頭のノードにする。
-			rt.append(addcfgNode(addonsxcu))
+			rt.append(addXcuNode(addonsxcu))
 			xcus.remove(addonsxcu)  # 追加したAddons.xcuファイルをリストから削除。
 		for xcu in xcus:  # 他のxcuファイルを追加。
-			rt.append(addcfgNode(xcu))
+			rt.append(addXcuNode(xcu))
 		unordb_file = ".uno.rdb".format(c["projectname"])  # rdbファイル名の取得。	
 		if os.path.exists(unordb_file):
 			rt.append(Elem("manifest:file-entry", {"manifest:full-path": unordb_file, "manifest:media-type": "application/vnd.sun.star.uno-typelibrary;type=RDB"}))
@@ -106,4 +108,4 @@ def createXMLs(c):
 	createManifestFile(component_file, c)  # manifext.xmlファイルの作成
 	createDescriptionFile(c)  # description.xmlファイルの作成。
 if __name__ == "__main__":
-	createXMLs(getConfig())
+	createXMLs(getConfig(False))

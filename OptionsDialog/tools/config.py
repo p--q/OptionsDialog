@@ -48,9 +48,11 @@ def getConfig(backupflg=None):
 		cp = readVariable(py)  # コンポーネントファイルの定数の辞書を取得。
 		if cp:
 		 	c["components"].append(cp)
+		if py=="optionsdialoghandler.py":
+		 	c["ExtentionID"] = cp["IMPLE_NAME"]  # optionsdialoghandler.pyの実装サービス名を拡張期のIDにする。
 	return c
 if __name__ == "__main__":
-	c = getConfig()
+	c = getConfig(False)
 	print(c)
   
 	
