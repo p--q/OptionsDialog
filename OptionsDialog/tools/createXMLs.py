@@ -6,137 +6,60 @@ import xml.etree.ElementTree as ET
 from helper import Elem
 from config import getConfig
 import glob
+def createVals(vals):
+	def addVal(element, key, val):
+		if element in vals:
+			vals[element][key] = val
+		else:
+			vals[element] = {key: val}
+	return addVal
 def createDescriptionFile(c):  # description.xmlファイルの作成。
 	langs = "en", "ja"
 	description_file = "description.xml"
 	c["backup"](description_file)
-	cfg = c["ini"]["description.xml"]  # config.iniを読み込んだconfigparserのdescription.xmlセクションを取得。
+	cfg = c["ini"]["description.xml"]  # config.iniを読み込んだconfigparserのdescription.xmlセクションを取得。キーはすべて小文字になっている。
 	vals = {}
+	addVal = createVals(vals)
 	for key, val in cfg.items():
-		for lang in langs:
-			end = "-{}".format(lang)
-			if key.endswith(end):
-				element = key.replace(end)	
-				if element in vals:
-					vals[element].append(val)
-				else:
-					vals[element] = [val]
-			elif key.endswith("-version"):
-				element = "dependencies"	
-				if element in vals:
-					vals[element].append((key, val))
-				else:
-					vals[element] = [(key, val)]	
-			elif key in ("accept-by", "suppress-on-update", "suppress-if-required"):
-				element = "registration"			
-				if element in vals:
-					vals[element].append((key, val))
-				else:
-					vals[element] = [(key, val)]	
-			else:
+		if val:
+			flg = False
+			for lang in langs: 
+				end = "-{}".format(lang)
+				if key.endswith(end):  # "publisher", "publisher-url", "license-text", "display-name", "extension-description"
+					flg = True
+					addVal(key.replace(end, ""), lang, val)
+			if flg:
+				continue
+			if key.endswith("-version"):  # "LibreOffice-minimal-version", "LibreOffice-maximal-version"
+				addVal("dependencies", key, val)
+			elif key in ("accept-by", "suppress-on-update", "suppress-if-required"):  # "accept-by", "suppress-on-update", "suppress-if-required"
+				addVal("registration", key, val)
+			else:  # "identifier", "version", "platform", "icon"
 				vals[key] = val			
 	with open(description_file, "w", encoding="utf-8") as f:
 		rt = Elem("description", {"xmlns": "http://openoffice.org/extensions/description/2006", "xmlns:xlink": "http://www.w3.org/1999/xlink", "xmlns:d": "http://openoffice.org/extensions/description/2006", "xmlns:l": "http://libreoffice.org/extensions/description/2011"})
-		for element, val in vals.items():
-			if element == "display-name":
-					
-					
-					
-					rt.append(Elem(element))
-					if element == "display-name":
-						[rt[-1].append(Elem("name", {"lang": lang}, text=val)) for val, lang in vals]
-					elif element == "extension-description":
-						[rt[-1].append(Elem("src", {"xlink:href": val, "lang": lang})) for val, lang in vals]
-					elif element == "publisher":
-						[rt[-1].append(Elem("name", {"lang": lang, "xlink:href": url}, text=val)) for val, url, lang in vals]
-					
-					
-			
-			
-			if key.endswith(["-{}".format(lang) for lang in langs]):
-				vals = []
-				for lang in langs:
-					val = cfg["{}-{}".format(element, lang)]
-					if val:
-						if element=="publisher":
-							url = cfg["{}-url-{}".format(element, lang)]
-							vals.append((val, url, lang))
-						else:
-							vals.append((val, lang))
-				if vals:
-					rt.append(Elem(element))
-					if element == "display-name":
-						[rt[-1].append(Elem("name", {"lang": lang}, text=val)) for val, lang in vals]
-					elif element == "extension-description":
-						[rt[-1].append(Elem("src", {"xlink:href": val, "lang": lang})) for val, lang in vals]
-					elif element == "publisher":
-						[rt[-1].append(Elem("name", {"lang": lang, "xlink:href": url}, text=val)) for val, url, lang in vals]
-				
-			
-			if key == "identifier":
-				if val == "%IMPLE_NAME%":  # IMPLE_NAMEのときはoptiondialoghandler.pyの実装サービス名をIMPLE_NAMEを使う。
-					val = c["ExtentionID"]
-				Elem(key, {"value": val})
-				
-				
-# 			if key.startswith("publisher", "publisher-url", "license-text", "display-name", "extension-description"):
-				
-				
-		
-		
-		
-	
-# 	keys = "identifier", "version", "platform", "LibreOffice-minimal-version", "LibreOffice-maximal-version", "accept-by", "suppress-on-update", "suppress-if-required", "icon"
-# 	keys-lang = "publisher", "publisher-url", "license-text", "display-name", "extension-description"
-# 	cfgs = {}
-# 	for key in keys:
-# 		try:
-			
-	
-	
-	
-	if cfg["identifier"] == "%IMPLE_NAME%":  # IMPLE_NAMEのときはoptiondialoghandler.pyの実装サービス名をIMPLE_NAMEを使う。
-		cfg["identifier"] = c["ExtentionID"]
-	with open(description_file, "w", encoding="utf-8") as f:
-		rt = Elem("description", {"xmlns": "http://openoffice.org/extensions/description/2006", "xmlns:xlink": "http://www.w3.org/1999/xlink", "xmlns:d": "http://openoffice.org/extensions/description/2006", "xmlns:l": "http://libreoffice.org/extensions/description/2011"})
-		keys = "identifier", "version", "platform"
-		[rt.append(Elem(key, {"value": cfg[key]})) for key in keys if cfg[key]]	
-		for key, name in ("icon", "default"),:
-			if cfg[key]:
-				rt.append(Elem(key))
-				rt[-1].append(Elem(name, {"xlink:href": cfg[key]}))						
-		for element in "display-name", "extension-description", "publisher":
-			vals = []
-			for lang in langs:
-				val = cfg["{}-{}".format(element, lang)]
-				if val:
-					if element=="publisher":
-						url = cfg["{}-url-{}".format(element, lang)]
-						vals.append((val, url, lang))
-					else:
-						vals.append((val, lang))
-			if vals:
+		for element, dic in vals.items():
+			if element in ("identifier", "version", "platform"):
+				rt.append(Elem(element, {"value": dic}))
+			elif element == "display-name":
 				rt.append(Elem(element))
-				if element == "display-name":
-					[rt[-1].append(Elem("name", {"lang": lang}, text=val)) for val, lang in vals]
-				elif element == "extension-description":
-					[rt[-1].append(Elem("src", {"xlink:href": val, "lang": lang})) for val, lang in vals]
-				elif element == "publisher":
-					[rt[-1].append(Elem("name", {"lang": lang, "xlink:href": url}, text=val)) for val, url, lang in vals]
-		vals = []
-		keys = "LibreOffice-minimal-version", "LibreOffice-maximal-version"
-		[vals.append((key, cfg[key])) for key in keys if cfg[key]]
-		if vals:
-			rt.append(Elem("dependencies"))
-			[rt[-1].append(Elem("l:{}".format(key), {"value": val, "d:name": "LIbreOffice {}".format(val)})) for key, val in vals]
-		rt.append(Elem("registration"))
-		if cfg["accept-by"]:
-			ts = "accept-by", "suppress-on-update", "suppress-if-required"
-			rt[-1].append(Elem("simple-license", {ts[0]: cfg[ts[0]], ts[1]: cfg[ts[1]], ts[2]: cfg[ts[2]]}))
-		for lang in langs:
-			val = cfg["license-text-{}".format(lang)]
-			if val:
-				rt[-1][-1].append(Elem("license-text", {"xlink:href": val, "lang": lang}))	
+				[rt[-1].append(Elem("name", {"lang": lang}, text=txt)) for lang, txt in dic.items()]
+			elif element == "extension-description":
+				rt.append(Elem(element))
+				[rt[-1].append(Elem("src", {"xlink:href": path, "lang": lang})) for lang, path in dic.items()]
+			elif element == "publisher":
+				rt.append(Elem(element))
+				[rt[-1].append(Elem("name", {"lang": lang, "xlink:href": vals["publisher-url"][lang]}, text=txt)) for lang, txt in dic.items()]
+			elif element == "icon":		
+				rt.append(Elem(element))
+				rt[-1].append(Elem("default", {"xlink:href": dic}))		
+			elif element == "dependencies":
+				rt.append(Elem(element))
+				[rt[-1].append(Elem("l:{}".format(key), {"value": val, "d:name": "LibreOffice {}".format(val)})) for key, val in dic.items()]			
+			elif element == "registration":
+				rt.append(Elem(element))
+				rt[-1].append(Elem("simple-license", {"accept-by": dic["accept-by"], "suppress-on-update": dic["suppress-on-update"], "suppress-if-required": dic["suppress-if-required"]}))	
+				[rt[-1][-1].append(Elem("license-text", {"xlink:href": val, "lang": lang})) for lang, val in vals["license-text"].items()]
 		tree = ET.ElementTree(rt)  # 根要素からxml.etree.ElementTree.ElementTreeオブジェクトにする。
 		tree.write(f.name, "utf-8", True)  # xml_declarationを有効にしてutf-8でファイルに出力する。   
 		print("{} file has been created.".format(description_file))

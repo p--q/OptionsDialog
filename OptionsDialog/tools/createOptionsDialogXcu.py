@@ -70,7 +70,7 @@ def createOptionsDialogXcu(c):  #Creation of OptionsDialog.xcu
 		
 		#オプションページの作成。拡張機能IDのc["ExtentionID"]をNameに使った時はLeafを一つにしないと拡張機能マネージャーでフリーズする。
 		root.append(Elem("node", {'oor:name': "Nodes"}))  # セットノードNodesを追加。
-		leaf = ElemLeaf(c, {"Name": c["ExtentionID"], "Label": {"en-US": "Maximum Paper Size", "ja-JP": "最大用紙サイズ"}})  # node-type=Leaf。小項目の設定。
+		leaf = ElemLeaf(c, {"Name": c["ExtentionID"], "Label": {"en-US": "Maximum Paper Size", "ja-JP": "最大用紙サイズ"}})  # node-type=Leaf。小項目の設定。Idを拡張機能Idと同じc["ExtentionID"]にする。
 		name = "{}.Node1".format(c["ExtentionID"])  # ロードマップコントロールに表示させる大項目のID。ユニークの必要があると考えるので拡張機能IDにくっつける。
 		node = ElemNode(c, {"Name": name, "Label": {"en-US": "Extensions Example", "ja-JP": "拡張機能の例"}, "AllModules": "false"}, leaves=(leaf,))  # node-type=Node。大項目の設定。
 		root[-1].append(node)  #  node-type=NodeをセットノードNodesに追加。
