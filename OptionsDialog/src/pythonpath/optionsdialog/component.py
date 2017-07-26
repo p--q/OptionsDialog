@@ -1,5 +1,7 @@
 #!
-# -*- coding: utf_8 -*-
+# -*- coding: utf-8 -*-
+import gettext
+import os
 import unohelper
 from com.sun.star.awt import XContainerWindowEventHandler
 from com.sun.star.lang import XServiceInfo
@@ -7,15 +9,20 @@ from com.sun.star.awt import XActionListener
 from com.sun.star.beans import PropertyValue
 # from com.sun.star.awt.PosSize import POSSIZE  # ピクセル単位でコントロールの座標を指定するときにPosSizeキーの値に使う。
 import traceback
-IMPLE_NAME = None
-SERVICE_NAME = None
+def localization(ctx):  # 地域化。moファイルの切替。Linuxでは不要だがWindowsでは設定が必要。
+	global _
+	readConfig, dummy = createConfigAccessor(ctx, ctx.getServiceManager(), "/org.openoffice.Setup/L10N")  # LibreOfficeの言語設定へのパス。
+	lang = readConfig("ooLocale"),  # 現在のロケールを取得。タプルかリストで渡す。
+	lodir = os.path.join(os.path.abspath(os.path.dirname(__file__)), "locale")  # このスクリプトと同じファルダにあるlocaleフォルダの絶対パスを取得。
+	mo = os.path.splitext(os.path.basename(__file__))[0]  # moファイル名。拡張子なし。このスクリプトファイルと同名と想定。
+	t = gettext.translation(mo, lodir, lang, fallback=True)  # Translations インスタンスを取得。moファイルがなくてもエラーはでない。
+	_ = t.gettext  # _にt.gettext関数を代入。
 def create(ctx, *args, imple_name, service_name):
 	global IMPLE_NAME
 	global SERVICE_NAME
-	if IMPLE_NAME is None:
-		IMPLE_NAME = imple_name 
-	if SERVICE_NAME is None:
-		SERVICE_NAME = service_name
+	IMPLE_NAME = imple_name
+	SERVICE_NAME = service_name
+	localization(ctx)  # 地域化する。
 	return DilaogHandler(ctx, *args)
 class DilaogHandler(unohelper.Base, XServiceInfo, XContainerWindowEventHandler):  # UNOコンポーネントにするクラス。
 	METHODNAME = "external_event"  # 変更できない。
@@ -32,15 +39,15 @@ class DilaogHandler(unohelper.Base, XServiceInfo, XContainerWindowEventHandler):
 					maxwidth, maxheight = self.readConfig(*self.cfgnames)  # コンポーネントデータノードの値を取得。取得した値は文字列。
 					buttonlistener = ButtonListener(dialog)  # ボタンリスナーをインスタンス化。
 					addControl = controlCreator(self.ctx, self.smgr, dialog)  # オプションダイアログdialogにコントロールを追加する関数を取得。
-					addControl("FixedLine", {"PositionX": 5, "PositionY": 13, "Width": 250, "Height": 10, "Label": "Maximum page size"})  # 文字付き水平線。
-					addControl("FixedText", {"PositionX": 11, "PositionY": 39, "Width": 49, "Height": 15, "Label": "Width", "NoLabel": True})  # 文字列。
-					addControl("NumericField", {"PositionX": 65, "PositionY": 39, "Width": 60, "Height": 15, "Spin": True, "ValueMin": 1, "Value": float(maxwidth), "DecimalAccuracy": 2, "HelpText": "Width"})  # 上下ボタン付き数字枠。小数点2桁、floatに変換して値を代入。
-					addControl("NumericField", {"PositionX": 65, "PositionY": 64, "Width": 60, "Height": 15, "Spin": True, "ValueMin": 1, "Value": float(maxheight), "DecimalAccuracy": 2, "HelpText": "Height"})  # 同上。
-					addControl("FixedText", {"PositionX": 11, "PositionY": 66, "Width": 49, "Height": 15, "Label": "Height", "NoLabel": True})  # 文字列。
+					addControl("FixedLine", {"PositionX": 5, "PositionY": 13, "Width": 250, "Height": 10, "Label": _("Maximum page size")})  # 文字付き水平線。
+					addControl("FixedText", {"PositionX": 11, "PositionY": 39, "Width": 49, "Height": 15, "Label": _("Width"), "NoLabel": True})  # 文字列。
+					addControl("NumericField", {"PositionX": 65, "PositionY": 39, "Width": 60, "Height": 15, "Spin": True, "ValueMin": 1, "Value": float(maxwidth), "DecimalAccuracy": 2, "HelpText": _("Width")})  # 上下ボタン付き数字枠。小数点2桁、floatに変換して値を代入。
+					addControl("NumericField", {"PositionX": 65, "PositionY": 64, "Width": 60, "Height": 15, "Spin": True, "ValueMin": 1, "Value": float(maxheight), "DecimalAccuracy": 2, "HelpText": _("Height")})  # 同上。
+					addControl("FixedText", {"PositionX": 11, "PositionY": 66, "Width": 49, "Height": 15, "Label": _("Height"), "NoLabel": True})  # 文字列。
 					addControl("FixedText", {"PositionX": 127, "PositionY": 42, "Width": 25, "Height": 15, "Label": "cm", "NoLabel": True})  # 文字列。
 					addControl("FixedText", {"PositionX": 127, "PositionY": 68, "Width": 25, "Height": 15, "Label": "cm", "NoLabel": True})  # 文字列。
-					addControl("Button", {"PositionX": 155, "PositionY": 39, "Width": 50, "Height": 15, "Label": "~Default"}, {"setActionCommand": "width", "addActionListener": buttonlistener})  # ボタン。
-					addControl("Button", {"PositionX": 155, "PositionY": 64, "Width": 50, "Height": 15, "Label": "~Default"}, {"setActionCommand": "height", "addActionListener": buttonlistener})  # ボタン。
+					addControl("Button", {"PositionX": 155, "PositionY": 39, "Width": 50, "Height": 15, "Label": _("~Default")}, {"setActionCommand": "width", "addActionListener": buttonlistener})  # ボタン。
+					addControl("Button", {"PositionX": 155, "PositionY": 64, "Width": 50, "Height": 15, "Label": _("~Default")}, {"setActionCommand": "height", "addActionListener": buttonlistener})  # ボタン。
 				elif eventname=="ok":  # OKボタンが押された時
 					maxwidth = dialog.getControl("NumericField1").getModel().Value  # NumericFieldコントロールから値を取得。
 					maxheight = dialog.getControl("NumericField2").getModel().Value  # NumericFieldコントロールから値を取得。
@@ -54,14 +61,14 @@ class DilaogHandler(unohelper.Base, XServiceInfo, XContainerWindowEventHandler):
 				return False
 		return True
 	def getSupportedMethodNames(self):
-		return (self.METHODNAME,)  # これも決め打ち。	
+		return (self.METHODNAME,)  # これも決め打ち。
 	# XServiceInfo
 	def getImplementationName(self):
 		return IMPLE_NAME
 	def supportsService(self, name):
 		return name == SERVICE_NAME
 	def getSupportedServiceNames(self):
-		return (SERVICE_NAME,)	
+		return (SERVICE_NAME,)
 class ButtonListener(unohelper.Base, XActionListener):  # ボタンリスナー。
 	DEFAULTMAXIMUM = 300  # デフォルト値を持っておく。
 	def __init__(self, dialog):
@@ -82,8 +89,8 @@ def controlCreator(ctx, smgr, dialog):  # コントロールを追加する関�
 			control.setPosSize(props.pop("PositionX"), props.pop("PositionY"), props.pop("Width"), props.pop("Height"), props.pop("PosSize"))  # ピクセルで指定するために位置座標と大きさだけコントロールで設定。
 			controlmodel = _createControlModel(controltype, props)  # コントロールモデルの生成。
 			control.setModel(controlmodel)  # コントロールにコントロールモデルを設定。
-			dialog.addControl(props["Name"], control)  # コントロールをコントロールコンテナに追加。			
-		else:  # Map AppFont (ma)のときはダイアログモデルにモデルを追加しないと正しくピクセルに変換されない。		
+			dialog.addControl(props["Name"], control)  # コントロールをコントロールコンテナに追加。
+		else:  # Map AppFont (ma)のときはダイアログモデルにモデルを追加しないと正しくピクセルに変換されない。
 			controlmodel = _createControlModel(controltype, props)  # コントロールモデルの生成。
 			dialogmodel.insertByName(props["Name"], controlmodel)  # ダイアログモデルにモデルを追加するだけでコントロールも作成される。
 		if attrs is not None:  # Dialogに追加したあとでないと各コントロールへの属性は追加できない。
@@ -92,7 +99,7 @@ def controlCreator(ctx, smgr, dialog):  # コントロールを追加する関�
 				if val is None:
 					getattr(control, key)()
 				else:
-					getattr(control, key)(val)	
+					getattr(control, key)(val)
 	def _createControlModel(controltype, props):  # コントロールモデルの生成。
 		if not "Name" in props:
 			props["Name"] = _generateSequentialName(controltype)  # Nameがpropsになければ通し番号名を生成。
@@ -102,8 +109,8 @@ def controlCreator(ctx, smgr, dialog):  # コントロールを追加する関�
 			if any(map(isinstance, values, [tuple]*len(values))):
 				[setattr(controlmodel, key, val) for key, val in props.items()]  # valはリストでもタプルでも対応可能。XMultiPropertySetのsetPropertyValues()では[]anyと判断されてタプルも使えない。
 			else:
-				controlmodel.setPropertyValues(tuple(props.keys()), tuple(values))						
-		return controlmodel								
+				controlmodel.setPropertyValues(tuple(props.keys()), tuple(values))
+		return controlmodel
 	def _generateSequentialName(controltype):  # 連番名の作成。
 		i = 1
 		flg = True
@@ -111,15 +118,15 @@ def controlCreator(ctx, smgr, dialog):  # コントロールを追加する関�
 			name = "{}{}".format(controltype, i)
 			flg = dialog.getControl(name)  # 同名のコントロールの有無を判断。
 			i += 1
-		return name  
+		return name
 	return addControl  # コントロールコンテナとそのコントロールコンテナにコントロールを追加する関数を返す。
 def createConfigAccessor(ctx, smgr, rootpath):  # コンポーネントデータノードへのアクセス。
 	cp = smgr.createInstanceWithContext("com.sun.star.configuration.ConfigurationProvider", ctx)
 	node = PropertyValue(Name="nodepath", Value=rootpath)
-	root = cp.createInstanceWithArguments("com.sun.star.configuration.ConfigurationUpdateAccess", (node,))		
+	root = cp.createInstanceWithArguments("com.sun.star.configuration.ConfigurationUpdateAccess", (node,))
 	def readConfig(*args):  # 値の取得。整数か文字列かブーリアンのいずれか。コンポーネントスキーマノードの設定に依存。
 		if len(args)==1:  # 引数の数が1つのとき
-			return root.getHierarchicalPropertyValue(*args) 
+			return root.getHierarchicalPropertyValue(*args)
 		elif len(args)>1:  # 引数の数が2つ以上のとき
 			return root.getHierarchicalPropertyValues(args)
 	def writeConfig(names, values):  # 値の書き込み。整数か文字列かブーリアンのいずれか。コンポーネントスキーマノードの設定に依存。
@@ -130,5 +137,5 @@ def createConfigAccessor(ctx, smgr, rootpath):  # コンポーネントデータ
 				root.setHierarchicalPropertyValue(names, values)
 			root.commitChanges()  # 変更値の書き込み。
 		except:
-			traceback.print_exc()			
+			traceback.print_exc()
 	return readConfig, writeConfig

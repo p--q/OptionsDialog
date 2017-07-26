@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//src/optionsdialoghandler.py=utf-8
+encoding//src/pythonpath/optionsdialog/component.py=utf-8
 encoding//tools/config.py=utf-8
 encoding//tools/createIDLs.py=utf-8
 encoding//tools/createOXT.py=utf-8
