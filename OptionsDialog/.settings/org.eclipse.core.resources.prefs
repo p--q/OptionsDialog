@@ -7,6 +7,7 @@ encoding//tools/createOXT.py=utf-8
 encoding//tools/createOptionsDialogXcu.py=utf-8
 encoding//tools/createProtocolHandlerXcu.py=utf-8
 encoding//tools/createRDB.py=utf-8
+encoding//tools/createUpdateXml.py=utf-8
 encoding//tools/createXMLs.py=utf-8
 encoding//tools/createXcs.py=utf-8
 encoding//tools/deployOXT.py=utf-8
