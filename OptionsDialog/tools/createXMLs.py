@@ -11,13 +11,97 @@ def createDescriptionFile(c):  # description.xmlファイルの作成。
 	description_file = "description.xml"
 	c["backup"](description_file)
 	cfg = c["ini"]["description.xml"]  # config.iniを読み込んだconfigparserのdescription.xmlセクションを取得。
+	vals = {}
+	for key, val in cfg.items():
+		for lang in langs:
+			end = "-{}".format(lang)
+			if key.endswith(end):
+				element = key.replace(end)	
+				if element in vals:
+					vals[element].append(val)
+				else:
+					vals[element] = [val]
+			elif key.endswith("-version"):
+				element = "dependencies"	
+				if element in vals:
+					vals[element].append((key, val))
+				else:
+					vals[element] = [(key, val)]	
+			elif key in ("accept-by", "suppress-on-update", "suppress-if-required"):
+				element = "registration"			
+				if element in vals:
+					vals[element].append((key, val))
+				else:
+					vals[element] = [(key, val)]	
+			else:
+				vals[key] = val			
+	with open(description_file, "w", encoding="utf-8") as f:
+		rt = Elem("description", {"xmlns": "http://openoffice.org/extensions/description/2006", "xmlns:xlink": "http://www.w3.org/1999/xlink", "xmlns:d": "http://openoffice.org/extensions/description/2006", "xmlns:l": "http://libreoffice.org/extensions/description/2011"})
+		for element, val in vals.items():
+			if element == "display-name":
+					
+					
+					
+					rt.append(Elem(element))
+					if element == "display-name":
+						[rt[-1].append(Elem("name", {"lang": lang}, text=val)) for val, lang in vals]
+					elif element == "extension-description":
+						[rt[-1].append(Elem("src", {"xlink:href": val, "lang": lang})) for val, lang in vals]
+					elif element == "publisher":
+						[rt[-1].append(Elem("name", {"lang": lang, "xlink:href": url}, text=val)) for val, url, lang in vals]
+					
+					
+			
+			
+			if key.endswith(["-{}".format(lang) for lang in langs]):
+				vals = []
+				for lang in langs:
+					val = cfg["{}-{}".format(element, lang)]
+					if val:
+						if element=="publisher":
+							url = cfg["{}-url-{}".format(element, lang)]
+							vals.append((val, url, lang))
+						else:
+							vals.append((val, lang))
+				if vals:
+					rt.append(Elem(element))
+					if element == "display-name":
+						[rt[-1].append(Elem("name", {"lang": lang}, text=val)) for val, lang in vals]
+					elif element == "extension-description":
+						[rt[-1].append(Elem("src", {"xlink:href": val, "lang": lang})) for val, lang in vals]
+					elif element == "publisher":
+						[rt[-1].append(Elem("name", {"lang": lang, "xlink:href": url}, text=val)) for val, url, lang in vals]
+				
+			
+			if key == "identifier":
+				if val == "%IMPLE_NAME%":  # IMPLE_NAMEのときはoptiondialoghandler.pyの実装サービス名をIMPLE_NAMEを使う。
+					val = c["ExtentionID"]
+				Elem(key, {"value": val})
+				
+				
+# 			if key.startswith("publisher", "publisher-url", "license-text", "display-name", "extension-description"):
+				
+				
+		
+		
+		
+	
+# 	keys = "identifier", "version", "platform", "LibreOffice-minimal-version", "LibreOffice-maximal-version", "accept-by", "suppress-on-update", "suppress-if-required", "icon"
+# 	keys-lang = "publisher", "publisher-url", "license-text", "display-name", "extension-description"
+# 	cfgs = {}
+# 	for key in keys:
+# 		try:
+			
+	
+	
+	
 	if cfg["identifier"] == "%IMPLE_NAME%":  # IMPLE_NAMEのときはoptiondialoghandler.pyの実装サービス名をIMPLE_NAMEを使う。
 		cfg["identifier"] = c["ExtentionID"]
 	with open(description_file, "w", encoding="utf-8") as f:
 		rt = Elem("description", {"xmlns": "http://openoffice.org/extensions/description/2006", "xmlns:xlink": "http://www.w3.org/1999/xlink", "xmlns:d": "http://openoffice.org/extensions/description/2006", "xmlns:l": "http://libreoffice.org/extensions/description/2011"})
 		keys = "identifier", "version", "platform"
 		[rt.append(Elem(key, {"value": cfg[key]})) for key in keys if cfg[key]]	
-		for key, name in ("icon", "default"), ("update-information", "src"):
+		for key, name in ("icon", "default"),:
 			if cfg[key]:
 				rt.append(Elem(key))
 				rt[-1].append(Elem(name, {"xlink:href": cfg[key]}))						
