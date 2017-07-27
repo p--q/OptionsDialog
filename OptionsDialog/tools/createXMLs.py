@@ -6,22 +6,22 @@ import xml.etree.ElementTree as ET
 from helper import Elem
 from config import getConfig
 import glob
-def createVals(vals):
-	def addVal(element, key, val):
-		if element in vals:
-			vals[element][key] = val
-		else:
-			vals[element] = {key: val}
+def createVals(dic):  # 辞書をクロージャーにもつ。
+	def addVal(element, key, val):  # キー: element、値に辞書を入れてその辞書のキーにkey、値にvalを入れる。
+		if element in dic:
+			dic[element][key] = val
+		else:  # キーがみつからないときは値に辞書を作成。
+			dic[element] = {key: val}
 	return addVal
 def createDescriptionFile(c):  # description.xmlファイルの作成。
-	langs = "en", "ja"
+	langs = "en", "ja"  # 言語のタプル
 	description_file = "description.xml"
 	c["backup"](description_file)
 	cfg = c["ini"]["description.xml"]  # config.iniを読み込んだconfigparserのdescription.xmlセクションを取得。キーはすべて小文字になっている。
-	vals = {}
+	vals = {}  # configparsarで取得した値を整理して取得する辞書。
 	addVal = createVals(vals)
 	for key, val in cfg.items():
-		if val:
+		if val:  # 値があるときのみ
 			flg = False
 			for lang in langs: 
 				end = "-{}".format(lang)
@@ -30,12 +30,12 @@ def createDescriptionFile(c):  # description.xmlファイルの作成。
 					addVal(key.replace(end, ""), lang, val)
 			if flg:
 				continue
-			if key.endswith("-version"):  # "LibreOffice-minimal-version", "LibreOffice-maximal-version"
-				addVal("dependencies", key, val)
+			if key.endswith("-version"):  # "libreoffice-minimal-version", "libreoffice-maximal-version"
+				addVal("dependencies", key.replace("libreoffice", "LibreOffice"), val)  # 小文字を元に戻しておく。
 			elif key in ("accept-by", "suppress-on-update", "suppress-if-required"):  # "accept-by", "suppress-on-update", "suppress-if-required"
 				addVal("registration", key, val)
 			else:  # "identifier", "version", "platform", "icon"
-				vals[key] = val			
+				vals[key] = val  # これらは辞書を入れ子にしない。		
 	with open(description_file, "w", encoding="utf-8") as f:
 		rt = Elem("description", {"xmlns": "http://openoffice.org/extensions/description/2006", "xmlns:xlink": "http://www.w3.org/1999/xlink", "xmlns:d": "http://openoffice.org/extensions/description/2006", "xmlns:l": "http://libreoffice.org/extensions/description/2011"})
 		for element, dic in vals.items():
@@ -47,7 +47,7 @@ def createDescriptionFile(c):  # description.xmlファイルの作成。
 			elif element == "extension-description":
 				rt.append(Elem(element))
 				[rt[-1].append(Elem("src", {"xlink:href": path, "lang": lang})) for lang, path in dic.items()]
-			elif element == "publisher":
+			elif element == "publisher":  # "publisher-url"も必須。
 				rt.append(Elem(element))
 				[rt[-1].append(Elem("name", {"lang": lang, "xlink:href": vals["publisher-url"][lang]}, text=txt)) for lang, txt in dic.items()]
 			elif element == "icon":		
