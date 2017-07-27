@@ -1,12 +1,22 @@
 <?xml version='1.0' encoding='utf-8'?>
-<description
-	xmlns="http://openoffice.org/extensions/description/2006"
-	xmlns:d="http://openoffice.org/extensions/description/2006"
-	xmlns:l="http://libreoffice.org/extensions/description/2011"
+<description xmlns="http://openoffice.org/extensions/description/2006"
+	xmlns:d="http://openoffice.org/extensions/description/2006" xmlns:l="http://libreoffice.org/extensions/description/2011"
 	xmlns:xlink="http://www.w3.org/1999/xlink">
 	<identifier value="com.pq.blogspot.comp.ExtensionExample" />
-	<version value="1.3.3" />
-	<platform value="all" />
+	<publisher>
+		<name lang="en" xlink:href="https://github.com/p--q/OptionsDialog">p--q</name>
+	</publisher>
+	<dependencies>
+		<l:LibreOffice-minimal-version d:name="LibreOffice 5.2"
+			value="5.2" />
+	</dependencies>
+	<registration>
+		<simple-license accept-by="admin" suppress-if-required="true"
+			suppress-on-update="true">
+			<license-text lang="en" xlink:href="LICENSE" />
+			<license-text lang="ja" xlink:href="LICENSE-ja" />
+		</simple-license>
+	</registration>
 	<icon>
 		<default xlink:href="icons/extension.png" />
 	</icon>
@@ -15,37 +25,9 @@
 		<name lang="ja">オプションダイアログの例</name>
 	</display-name>
 	<extension-description>
-		<src
-			lang="en"
-			xlink:href="descriptions/descripton_en.txt" />
-		<src
-			lang="ja"
-			xlink:href="descriptions/descripton_ja.txt" />
+		<src lang="en" xlink:href="descriptions/descripton_en.txt" />
+		<src lang="ja" xlink:href="descriptions/descripton_ja.txt" />
 	</extension-description>
-	<publisher>
-		<name
-			lang="en"
-			xlink:href="https://p--q.blogspot.com/ncr">p--q.blogspot.com</name>
-		<name
-			lang="ja"
-			xlink:href="https://p--q.blogspot.jp">p--q.blogspot.jp</name>
-	</publisher>
-	<dependencies>
-		<l:LibreOffice-minimal-version
-			d:name="LIbreOffice 5.2"
-			value="5.2" />
-	</dependencies>
-	<registration>
-		<simple-license
-			accept-by="admin"
-			suppress-if-required="true"
-			suppress-on-update="true">
-			<license-text
-				lang="en"
-				xlink:href="LICENSE" />
-			<license-text
-				lang="ja"
-				xlink:href="LICENSE-ja" />
-		</simple-license>
-	</registration>
+	<platform value="all" />
+	<version value="1.1.0" />
 </description>

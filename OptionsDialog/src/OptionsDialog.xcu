@@ -10,8 +10,8 @@
 			oor:name="com.pq.blogspot.comp.ExtensionExample.Node1"
 			oor:op="fuse">
 			<prop oor:name="Label">
-				<value xml:lang="ja-JP">拡張機能の例</value>
 				<value xml:lang="en-US">Extensions Example</value>
+				<value xml:lang="ja-JP">拡張機能の例</value>
 			</prop>
 			<prop oor:name="AllModules">
 				<value>false</value>
@@ -21,17 +21,17 @@
 					oor:name="com.pq.blogspot.comp.ExtensionExample"
 					oor:op="fuse">
 					<prop oor:name="Label">
-						<value xml:lang="ja-JP">最大用紙サイズ</value>
 						<value xml:lang="en-US">Maximum Paper Size</value>
+						<value xml:lang="ja-JP">最大用紙サイズ</value>
 					</prop>
-					<prop oor:name="EventHandlerService">
-						<value>com.pq.blogspot.comp.ExtensionExample</value>
+					<prop oor:name="OptionsPage">
+						<value>%origin%/dialogs/optionsdialog.xdl</value>
 					</prop>
 					<prop oor:name="Id">
 						<value>com.pq.blogspot.comp.ExtensionExample</value>
 					</prop>
-					<prop oor:name="OptionsPage">
-						<value>%origin%/dialogs/optionsdialog.xdl</value>
+					<prop oor:name="EventHandlerService">
+						<value>com.pq.blogspot.comp.ExtensionExample</value>
 					</prop>
 				</node>
 			</node>
