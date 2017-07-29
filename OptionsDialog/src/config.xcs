@@ -7,27 +7,35 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<templates>
-		<group oor:name="Size">
+		<group oor:name="Sizes">
 			<info>
-				<desc>width and hight.</desc>
+				<desc>width and height.</desc>
 			</info>
 			<prop
 				oor:name="Width"
-				oor:type="xs:string">
-				<value>300</value>
-			</prop>
+				oor:type="xs:string" />
 			<prop
 				oor:name="Height"
-				oor:type="xs:string">
-				<value>300</value>
-			</prop>
+				oor:type="xs:string" />
+			<group oor:name="Defaults">
+				<prop
+					oor:name="Width"
+					oor:type="xs:string">
+					<value>300</value>
+				</prop>
+				<prop
+					oor:name="Height"
+					oor:type="xs:string">
+					<value>300</value>
+				</prop>
+			</group>
 		</group>
 	</templates>
 	<component>
 		<group oor:name="Leaves">
 			<node-ref
 				oor:name="MaximumPaperSize"
-				oor:node-type="Size" />
+				oor:node-type="Sizes" />
 		</group>
 	</component>
 </oor:component-schema>
