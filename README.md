@@ -2,7 +2,7 @@
 
 Example of LibreOffice extension with an option page
 
-This repository contains the PyDev package ov Eclipse.
+This repository contains the PyDev package of Eclipse.
 
 ## Features
 
