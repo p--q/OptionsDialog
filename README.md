@@ -24,7 +24,7 @@ Hide some options pages
 
 ## tools
 
-In the tools folder there are scripts that generates files necessary for creating an oxt file.
+In the tools folder there are scripts that generates files necessary for composing an oxt file.
 
 These scripts work with Ubuntu 14.04.
 
