@@ -32,7 +32,7 @@ They will probably work on Linux.
 
 I do not know at all whether they work on Windows.
 
-CreateIDLs.py generates idl files, createRDB.py compiles idl files, createProtocolHandlerXcu.py generates ProtocolHandler.xcu defining the ProtocolHandlercomponent data node, but these are not used to create the oxt file.
+createIDLs.py generates idl files, createRDB.py compiles idl files, createProtocolHandlerXcu.py generates ProtocolHandler.xcu defining the ProtocolHandlercomponent data node, but these are not used to create the oxt file.
 
 ### createOptionsDialogXcu.py and createXcs.py
 
