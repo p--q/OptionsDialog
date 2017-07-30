@@ -121,6 +121,7 @@ def createXMLs(c):
 	os.chdir(c["src_path"])  # srcフォルダに移動。  
 	createComponentsFile(component_file, c)  # .componentファイルの作成。
 	createManifestFile(component_file, c)  # manifext.xmlファイルの作成
-	createDescriptionFile(c)  # description.xmlファイルの作成。
+	if c["ini"] is not None:  # config.iniファイルがあるとき
+		createDescriptionFile(c)  # description.xmlファイルの作成。
 if __name__ == "__main__":
 	createXMLs(getConfig(False))
