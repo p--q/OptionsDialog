@@ -4,44 +4,45 @@
 	xmlns:d="http://openoffice.org/extensions/description/2006"
 	xmlns:l="http://libreoffice.org/extensions/description/2011"
 	xmlns:xlink="http://www.w3.org/1999/xlink">
-	<platform value="all" />
-	<registration>
-		<simple-license
-			suppress-if-required="true"
-			suppress-on-update="true">
-			<license-text
-				lang="en"
-				xlink:href="LICENSE" />
-			<license-text
-				lang="ja"
-				xlink:href="LICENSE-ja" />
-		</simple-license>
-	</registration>
-	<identifier value="com.pq.blogspot.comp.ExtensionExample" />
-	<version value="1.1.0" />
-	<display-name>
-		<name lang="en">Option Dialog Example</name>
-		<name lang="ja">オプションダイアログの例</name>
-	</display-name>
-	<dependencies>
-		<l:LibreOffice-minimal-version
-			d:name="LibreOffice 5.2"
-			value="5.2" />
-	</dependencies>
-	<extension-description>
-		<src
-			lang="en"
-			xlink:href="descriptions/descripton_en.txt" />
-		<src
-			lang="ja"
-			xlink:href="descriptions/descripton_ja.txt" />
-	</extension-description>
-	<icon>
-		<default xlink:href="icons/extension.png" />
-	</icon>
 	<publisher>
 		<name
 			lang="en"
 			xlink:href="https://github.com/p--q/OptionsDialog">p--q</name>
 	</publisher>
+	<dependencies>
+		<l:LibreOffice-minimal-version
+			d:name="LibreOffice 5.2"
+			value="5.2" />
+	</dependencies>
+	<identifier value="com.pq.blogspot.comp.ExtensionExample" />
+	<version value="1.1.0" />
+	<extension-description>
+		<src
+			lang="ja"
+			xlink:href="descriptions/descripton_ja.txt" />
+		<src
+			lang="en"
+			xlink:href="descriptions/descripton_en.txt" />
+	</extension-description>
+	<platform value="all" />
+	<display-name>
+		<name lang="ja">オプションダイアログの例</name>
+		<name lang="en">Option Dialog Example</name>
+	</display-name>
+	<icon>
+		<default xlink:href="icons/extension.png" />
+	</icon>
+	<registration>
+		<simple-license
+			accept-by="admin"
+			suppress-if-required="true"
+			suppress-on-update="true">
+			<license-text
+				lang="ja"
+				xlink:href="LICENSE-ja" />
+			<license-text
+				lang="en"
+				xlink:href="LICENSE" />
+		</simple-license>
+	</registration>
 </description>
