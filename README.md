@@ -1,4 +1,4 @@
-# OptionsDialog
+# OptionsDialog Extension for LibreOffice
 
 Example of LibreOffice extension with an option page
 
