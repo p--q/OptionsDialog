@@ -4,6 +4,10 @@ Example of LibreOffice extension with an option page
 
 This repository contains the PyDev package of Eclipse.
 
+## Compatibility
+
+This oxt file is Linux and Windows compatible.
+
 ## Features
 
 Create controls on the options dialog at runtime
@@ -21,6 +25,12 @@ Hide some options pages
 ## tools
 
 In the tools folder there are scripts that generates files necessary for creating an oxt file.
+
+These scripts work with Ubuntu 14.04.
+
+They will probably work on Linux.
+
+I do not know at all whether they work on Windows.
 
 CreateIDLs.py generates idl files, createRDB.py compiles idl files, createProtocolHandlerXcu.py generates ProtocolHandler.xcu defining the ProtocolHandlercomponent data node, but these are not used to create the oxt file.
 
