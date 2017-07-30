@@ -2,7 +2,7 @@
 
 Example of LibreOffice extension with an option page
 
-This repository contains the PyDev package of Eclipse.
+This repository contains the PyDev project of Eclipse.
 
 ## Compatibility
 
@@ -32,7 +32,7 @@ They will probably work on Linux.
 
 I do not know at all whether they work on Windows.
 
-createIDLs.py generates idl files, createRDB.py compiles idl files, createProtocolHandlerXcu.py generates ProtocolHandler.xcu defining the ProtocolHandlercomponent data node, but these are not used to create the oxt file.
+createIDLs.py generates idl files, createRDB.py compiles idl files, createProtocolHandlerXcu.py generates ProtocolHandler.xcu defining the ProtocolHandlercomponent data node, but these are not used in the project.
 
 ### createOptionsDialogXcu.py and createXcs.py
 
