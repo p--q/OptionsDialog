@@ -4,6 +4,20 @@ Example of LibreOffice extension with an option page
 
 This repository contains the PyDev package ov Eclipse.
 
+## Features
+
+Create controls on the options dialog at runtime
+
+Use Python gettext module for internationalization of the options dialog
+
+Display the option button on LibreOffice Extension Manager
+
+Save values in own component nodes
+
+Restrict display of the options page to Writer only
+
+Hide some options pages
+
 ## tools
 
 In the tools folder there are scripts that generates files necessary for creating an oxt file.
@@ -27,5 +41,3 @@ createOXT.py locates the necessary files in the src folder, creates an oxt file,
 ### deployOXT.py
 
 deployOXT.py deploys the oxt file in LibreOffice extension manager.
-
-
