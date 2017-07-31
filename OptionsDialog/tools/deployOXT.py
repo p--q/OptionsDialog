@@ -19,6 +19,6 @@ def deployOXT(c):
         print("If the error message is not, {} deployment to {} has been successful.".format(oxt_path, os.path.basename(uno_path)))
         print("Restarting the OS may be necessary depending on the error.")
     else:
-        print("There is no oxt file.")
+        print("There is no oxt file.", file=sys.stderr)
 if __name__ == "__main__":
     deployOXT(getConfig(False)) 
