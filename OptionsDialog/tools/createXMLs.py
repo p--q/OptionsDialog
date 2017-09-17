@@ -108,7 +108,7 @@ def createManifestFile(component_file, c):  # manifext.xmlファイルの作成
 			xcus.remove(addonsxcu)  # 追加したAddons.xcuファイルをリストから削除。
 		for xcu in xcus:  # 他のxcuファイルを追加。
 			rt.append(addXcuNode(xcu))
-		unordb_file = ".uno.rdb".format(c["projectname"])  # rdbファイル名の取得。	
+		unordb_file = "{}.uno.rdb".format(c["projectname"])  # rdbファイル名の取得。	
 		if os.path.exists(unordb_file):
 			rt.append(Elem("manifest:file-entry", {"manifest:full-path": unordb_file, "manifest:media-type": "application/vnd.sun.star.uno-typelibrary;type=RDB"}))
 		if os.path.exists(component_file):
