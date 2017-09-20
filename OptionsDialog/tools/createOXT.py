@@ -15,7 +15,7 @@ def createOXT(c):
 	c["backup"](oxt)  # すでにあるoxtファイルをbkに改名。
 	os.chdir(c["src_path"])  # srcフォルダに移動。
 	if not shutil.which("zip"):  # zipコマンドの有効を確認。
-		print("The zip command must be valid for execution.")
+		print("The zip command must be valid for execution.", file=sys.stderr)
 		sys.exit()
 	mani = [os.path.join("META-INF", "manifest.xml")]  # manifest.xmlを取得。
 	rdbs = glob.glob("*.rdb")  # rdbファイルを取得。

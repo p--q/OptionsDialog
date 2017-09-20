@@ -16,7 +16,7 @@ def createRDB(c):
     #すべての存在確認をする。ツールがそろっていなければ終了する。
     for p in [regmerge, regview, idlc, sdkidl_path]:
         if not os.path.exists(p):
-            print("Erorr: {} does not exit.".format(p))
+            print("Erorr: {} does not exit.".format(p), file=sys.stderr)
             sys.exit()    
     myidl_path = os.path.join(c["src_path"], "idl")  # PyDevプロジェクトのidlフォルダへの絶対パスを取得。
     if os.path.exists(myidl_path):  # idlフォルダがあるとき

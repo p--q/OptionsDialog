@@ -41,17 +41,21 @@ def getConfig(backupflg=None):
 		"projectname": os.path.basename(os.path.dirname(sys.path[0])),  # プロジェクトファイル名
 		}
 	os.chdir(c["src_path"])  # srcフォルダに移動。
-	cfgp = ConfigParser()
-	cfgp.read("config.ini")
+	inifile = "config.ini"
+	c["ini"] = None
+	if os.path.exists(inifile):  # config.iniファイルがあるとき
+		cfgp = ConfigParser()
+		cfgp.read(inifile)
+		c["ini"] = cfgp  # config.iniファイルの内容を取得。
 	for py in glob.iglob("*.py"):  # srcフォルダの直下にあるpyファイルのリストを取得。
 		cp = readVariable(py)  # コンポーネントファイルの定数の辞書を取得。
 		if cp:
 		 	c["components"].append(cp)
 		if py=="optionsdialoghandler.py":
 		 	c["ExtentionID"] = cp["IMPLE_NAME"]  # optionsdialoghandler.pyの実装サービス名を拡張機能のIDにする。
-	 		if cfgp["description.xml"]["identifier"] == "%IMPLE_NAME%":  # %IMPLE_NAME%はoptiondialoghandler.pyの実装サービス名を代入する。
-			 	cfgp["description.xml"]["identifier"] = c["ExtentionID"]
-	c["ini"] = cfgp  # config.iniファイルの内容を取得。
+		 	if c["ini"] is not None:
+		 		if c["ini"]["description.xml"]["identifier"] == "%IMPLE_NAME%":  # %IMPLE_NAME%はoptiondialoghandler.pyの実装サービス名を代入する。
+				 	c["ini"]["description.xml"]["identifier"] = c["ExtentionID"]
 	return c
 if __name__ == "__main__":
 	c = getConfig(False)

@@ -53,7 +53,7 @@ def createDescriptionFile(c):  # description.xmlファイルの作成。
 					try:
 						rt[-1].append(Elem("name", {"lang": lang, "xlink:href": vals["publisher-url"][lang]}, text=txt))
 					except KeyError:
-						print("publisher-url-{} is not defined.".format(lang))
+						print("publisher-url-{} is not defined.".format(lang), file=sys.stderr)
 						rt[-1].append(Elem("name", {"lang": lang}, text=txt))				
 			elif element == "icon":		
 				rt.append(Elem(element))
@@ -67,7 +67,7 @@ def createDescriptionFile(c):  # description.xmlファイルの作成。
 				try:
 					[rt[-1][-1].append(Elem("license-text", {"xlink:href": val, "lang": lang})) for lang, val in vals["license-text"].items()]
 				except KeyError:
-					print("license-text is not defined.")
+					print("license-text is not defined.", file=sys.stderr)
 		tree = ET.ElementTree(rt)  # 根要素からxml.etree.ElementTree.ElementTreeオブジェクトにする。
 		tree.write(f.name, "utf-8", True)  # xml_declarationを有効にしてutf-8でファイルに出力する。   
 		print("{} file has been created.".format(description_file))
@@ -108,7 +108,7 @@ def createManifestFile(component_file, c):  # manifext.xmlファイルの作成
 			xcus.remove(addonsxcu)  # 追加したAddons.xcuファイルをリストから削除。
 		for xcu in xcus:  # 他のxcuファイルを追加。
 			rt.append(addXcuNode(xcu))
-		unordb_file = ".uno.rdb".format(c["projectname"])  # rdbファイル名の取得。	
+		unordb_file = "{}.uno.rdb".format(c["projectname"])  # rdbファイル名の取得。	
 		if os.path.exists(unordb_file):
 			rt.append(Elem("manifest:file-entry", {"manifest:full-path": unordb_file, "manifest:media-type": "application/vnd.sun.star.uno-typelibrary;type=RDB"}))
 		if os.path.exists(component_file):
@@ -121,6 +121,7 @@ def createXMLs(c):
 	os.chdir(c["src_path"])  # srcフォルダに移動。  
 	createComponentsFile(component_file, c)  # .componentファイルの作成。
 	createManifestFile(component_file, c)  # manifext.xmlファイルの作成
-	createDescriptionFile(c)  # description.xmlファイルの作成。
+	if c["ini"] is not None:  # config.iniファイルがあるとき
+		createDescriptionFile(c)  # description.xmlファイルの作成。
 if __name__ == "__main__":
 	createXMLs(getConfig(False))
